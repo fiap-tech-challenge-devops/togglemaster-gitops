@@ -1,0 +1,39 @@
+namespace: togglemaster
+replicaCount: 2
+
+image:
+  repository: 123456789012.dkr.ecr.us-east-1.amazonaws.com/targeting-service
+  tag: v1.0.0-placeholder
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8003
+  targetPort: 8003
+
+autoscaling:
+  enabled: false
+
+readinessProbe:
+  enabled: true
+  path: /health
+  port: 8003
+  initialDelaySeconds: 10
+  periodSeconds: 10
+
+livenessProbe:
+  enabled: true
+  path: /health
+  port: 8003
+  initialDelaySeconds: 20
+  periodSeconds: 20
+
+env:
+  - name: APP_ENV
+    value: prod
+  - name: PORT
+    value: "8003"
+
+serviceAccount:
+  create: true
+  name: targeting-service

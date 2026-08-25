@@ -1,0 +1,42 @@
+namespace: togglemaster
+replicaCount: 2
+
+image:
+  repository: 123456789012.dkr.ecr.us-east-1.amazonaws.com/analytics-service
+  tag: v1.0.0-placeholder
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8005
+  targetPort: 8005
+
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 70
+
+readinessProbe:
+  enabled: true
+  path: /health
+  port: 8005
+  initialDelaySeconds: 10
+  periodSeconds: 10
+
+livenessProbe:
+  enabled: true
+  path: /health
+  port: 8005
+  initialDelaySeconds: 20
+  periodSeconds: 20
+
+env:
+  - name: APP_ENV
+    value: prod
+  - name: PORT
+    value: "8005"
+
+serviceAccount:
+  create: true
+  name: analytics-service
