@@ -42,9 +42,9 @@ spec:
             - configMapRef:
                 name: {{ .Values.configMap.name | default (printf "%s-config" .Release.Name) }}
             {{- end }}
-            {{- if .Values.secret.enabled }}
+            {{- if or .Values.secret.enabled .Values.externalSecret.enabled }}
             - secretRef:
-                name: {{ .Values.secret.name }}
+              name: {{ include "togglemaster-base.secretName" . }}
             {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}

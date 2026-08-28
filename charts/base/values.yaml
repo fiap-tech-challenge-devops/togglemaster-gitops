@@ -51,6 +51,14 @@ configMap:
 secret:
   enabled: false
   name: ""
+externalSecret:
+  enabled: false
+  name: ""
+  refreshInterval: 1h
+  secretStoreRef:
+    name: aws-secrets-manager
+    kind: ClusterSecretStore
+  data: []
 serviceAccount:
   create: true
   name: ""
