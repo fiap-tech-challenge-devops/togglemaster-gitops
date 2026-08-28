@@ -37,6 +37,17 @@ env:
   - name: PORT
     value: "8003"
 
+configMapData:
+  AUTH_SERVICE_URL: "http://auth-service:8001"
+
+configMap:
+  enabled: true
+  name: targeting-service-config
+
+secret:
+  enabled: true
+  name: targeting-service-rds-secret
+
 serviceAccount:
   create: true
   name: targeting-service

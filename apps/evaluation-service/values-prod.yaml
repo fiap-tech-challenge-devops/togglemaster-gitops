@@ -37,6 +37,21 @@ env:
   - name: PORT
     value: "8004"
 
+configMapData:
+  AWS_REGION: "us-east-1"
+  AWS_SQS_URL: "https://sqs.us-east-1.amazonaws.com/762103020993/togglemaster-evaluation-events"
+  REDIS_URL: "set-by-deploy-from-ssm"
+  FLAG_SERVICE_URL: "http://flag-service:8002"
+  TARGETING_SERVICE_URL: "http://targeting-service:8003"
+
+configMap:
+  enabled: true
+  name: evaluation-service-config
+
+secret:
+  enabled: true
+  name: evaluation-service-secrets
+
 serviceAccount:
   create: true
   name: evaluation-service

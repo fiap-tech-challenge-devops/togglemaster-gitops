@@ -40,6 +40,15 @@ env:
   - name: PORT
     value: "8005"
 
+configMapData:
+  AWS_REGION: "us-east-1"
+  AWS_SQS_URL: "https://sqs.us-east-1.amazonaws.com/762103020993/togglemaster-evaluation-events"
+  AWS_DYNAMODB_TABLE: "ToggleMasterAnalytics"
+
+configMap:
+  enabled: true
+  name: analytics-service-config
+
 serviceAccount:
   create: true
   name: analytics-service

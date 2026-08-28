@@ -39,6 +39,10 @@ env:
   - name: AUTH_SERVICE_PORT
     value: "8001"
 
+secret:
+  enabled: true
+  name: auth-service-secrets
+
 serviceAccount:
   create: true
   name: auth-service
