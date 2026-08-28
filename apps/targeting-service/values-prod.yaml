@@ -44,9 +44,14 @@ configMap:
   enabled: true
   name: targeting-service-config
 
-secret:
+externalSecret:
   enabled: true
-  name: targeting-service-rds-secret
+  name: targeting-service-rds
+  data:
+    - secretKey: DATABASE_URL
+      remoteRef:
+        key: togglemaster/rds/targeting
+        property: connection_string
 
 serviceAccount:
   create: true
