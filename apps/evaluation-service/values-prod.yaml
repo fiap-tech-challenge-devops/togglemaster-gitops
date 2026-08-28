@@ -48,9 +48,14 @@ configMap:
   enabled: true
   name: evaluation-service-config
 
-secret:
+externalSecret:
   enabled: true
-  name: evaluation-service-secrets
+  name: evaluation-service-app
+  data:
+    - secretKey: SERVICE_API_KEY
+      remoteRef:
+        key: togglemaster/app/evaluation
+        property: SERVICE_API_KEY
 
 serviceAccount:
   create: true

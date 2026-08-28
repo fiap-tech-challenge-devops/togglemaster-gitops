@@ -39,9 +39,18 @@ env:
   - name: AUTH_SERVICE_PORT
     value: "8001"
 
-secret:
+externalSecret:
   enabled: true
-  name: auth-service-secrets
+  name: auth-service
+  data:
+    - secretKey: DATABASE_URL
+      remoteRef:
+        key: togglemaster/rds/auth
+        property: connection_string
+    - secretKey: MASTER_KEY
+      remoteRef:
+        key: togglemaster/app/auth
+        property: MASTER_KEY
 
 serviceAccount:
   create: true

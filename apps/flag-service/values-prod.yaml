@@ -44,9 +44,14 @@ configMap:
   enabled: true
   name: flag-service-config
 
-secret:
+externalSecret:
   enabled: true
-  name: flag-service-rds-secret
+  name: flag-service-rds
+  data:
+    - secretKey: DATABASE_URL
+      remoteRef:
+        key: togglemaster/rds/flags
+        property: connection_string
 
 serviceAccount:
   create: true
