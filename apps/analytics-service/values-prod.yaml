@@ -2,9 +2,12 @@ namespace: togglemaster
 replicaCount: 2
 
 image:
-  repository: 123456789012.dkr.ecr.us-east-1.amazonaws.com/analytics-service
+  repository: 123456789012.dkr.ecr.us-east-1.amazonaws.com/togglemaster/analytics-service
   tag: v1.0.0-placeholder
   pullPolicy: IfNotPresent
+
+imagePullSecrets:
+  - name: ecr-registry-secret
 
 service:
   type: ClusterIP
