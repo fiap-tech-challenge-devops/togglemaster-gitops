@@ -2,8 +2,8 @@ namespace: togglemaster
 replicaCount: 2
 
 image:
-  repository: 123456789012.dkr.ecr.us-east-1.amazonaws.com/togglemaster/analytics-service
-  tag: v1.0.0-placeholder
+  repository: 762103020993.dkr.ecr.us-east-1.amazonaws.com/togglemaster/analytics-service
+  tag: 40667f1ed52310ad7037c749073b962784418085
   pullPolicy: IfNotPresent
 
 imagePullSecrets:

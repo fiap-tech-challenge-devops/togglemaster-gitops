@@ -2,8 +2,8 @@ namespace: togglemaster
 replicaCount: 2
 
 image:
-  repository: 123456789012.dkr.ecr.us-east-1.amazonaws.com/togglemaster/targeting-service
-  tag: v1.0.0-placeholder
+  repository: 762103020993.dkr.ecr.us-east-1.amazonaws.com/togglemaster/targeting-service
+  tag: cddba0dff8073d916983923497912801ec99139a
   pullPolicy: IfNotPresent
 
 imagePullSecrets:
