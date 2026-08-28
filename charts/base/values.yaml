@@ -45,6 +45,12 @@ livenessProbe:
 
 env: []
 configMapData: {}
+configMap:
+  enabled: false
+  name: ""
+secret:
+  enabled: false
+  name: ""
 serviceAccount:
   create: true
   name: ""
