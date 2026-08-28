@@ -2,8 +2,8 @@ namespace: togglemaster
 replicaCount: 2
 
 image:
-  repository: 123456789012.dkr.ecr.us-east-1.amazonaws.com/togglemaster/flag-service
-  tag: v1.0.0-placeholder
+  repository: 762103020993.dkr.ecr.us-east-1.amazonaws.com/togglemaster/flag-service
+  tag: c77af4ec17301f19531872731acd3dfd1b781729
   pullPolicy: IfNotPresent
 
 imagePullSecrets:
