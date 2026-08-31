@@ -52,4 +52,6 @@ externalSecret:
         key: togglemaster/app/auth
         property: MASTER_KEY
 
+serviceAccount:
+  create: true
   name: auth-service
