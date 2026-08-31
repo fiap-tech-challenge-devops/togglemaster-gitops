@@ -3,7 +3,7 @@ replicaCount: 2
 
 image:
   repository: 762103020993.dkr.ecr.us-east-1.amazonaws.com/togglemaster/analytics-service
-  tag: 40667f1ed52310ad7037c749073b962784418085
+  tag: 404c8a3ac53c8a575d89287d705e05148e11bfda
   pullPolicy: IfNotPresent
 
 imagePullSecrets:
