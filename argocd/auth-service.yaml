@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: auth-service
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/fiap-tech-challenge-devops/togglemaster-gitops.git
+    targetRevision: main
+    path: charts/base
+    helm:
+      valueFiles:
+        - ../../apps/auth-service/values-prod.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: togglemaster
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
