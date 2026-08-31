@@ -1,57 +1,48 @@
 namespace: togglemaster
 replicaCount: 2
-
 image:
   repository: 762103020993.dkr.ecr.us-east-1.amazonaws.com/togglemaster/auth-service
-  tag: fa2a8e65f4c8a2aae79a7dd69f84bae2ddf54fbf
+  tag: edc4ef38631a8a0537dae0f18fb33da0dbf3d6b1
   pullPolicy: IfNotPresent
-
 imagePullSecrets:
-  - name: ecr-registry-secret
-
+- name: ecr-registry-secret
 service:
   type: ClusterIP
   port: 8001
   targetPort: 8001
-
 autoscaling:
   enabled: false
-
 readinessProbe:
   enabled: true
   path: /health
   port: 8001
   initialDelaySeconds: 10
   periodSeconds: 10
-
 livenessProbe:
   enabled: true
   path: /health
   port: 8001
   initialDelaySeconds: 20
   periodSeconds: 20
-
 env:
-  - name: APP_ENV
-    value: prod
-  - name: PORT
-    value: "8001"
-  - name: AUTH_SERVICE_PORT
-    value: "8001"
-
+- name: APP_ENV
+  value: prod
+- name: PORT
+  value: '8001'
+- name: AUTH_SERVICE_PORT
+  value: '8001'
 externalSecret:
   enabled: true
   name: auth-service
   data:
-    - secretKey: DATABASE_URL
-      remoteRef:
-        key: togglemaster/rds/auth
-        property: connection_string
-    - secretKey: MASTER_KEY
-      remoteRef:
-        key: togglemaster/app/auth
-        property: MASTER_KEY
-
+  - secretKey: DATABASE_URL
+    remoteRef:
+      key: togglemaster/rds/auth
+      property: connection_string
+  - secretKey: MASTER_KEY
+    remoteRef:
+      key: togglemaster/app/auth
+      property: MASTER_KEY
 serviceAccount:
   create: true
   name: auth-service
