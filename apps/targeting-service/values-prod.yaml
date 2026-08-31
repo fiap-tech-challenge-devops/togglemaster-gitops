@@ -3,7 +3,7 @@ replicaCount: 2
 
 image:
   repository: 762103020993.dkr.ecr.us-east-1.amazonaws.com/togglemaster/targeting-service
-  tag: cddba0dff8073d916983923497912801ec99139a
+  tag: ed6711a180311b6bba3c2e7fef390cd1e6ef1c16
   pullPolicy: IfNotPresent
 
 imagePullSecrets:
