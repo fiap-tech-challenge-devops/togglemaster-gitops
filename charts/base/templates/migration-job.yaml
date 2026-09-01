@@ -34,7 +34,13 @@ spec:
           image: {{ .Values.migration.image }}
           command: ["sh", "-c"]
           args:
-            - psql "${{ .Values.migration.databaseUrlKey }}" --set ON_ERROR_STOP=1 -f /sql/migration.sql
+            - |
+              set -e
+              psql "${{ .Values.migration.databaseUrlKey }}" --set ON_ERROR_STOP=1 -f /sql/migration.sql
+              {{- range .Values.migration.seedApiKeys }}
+              HASH=$(printf '%s' "${{ .keyEnv }}" | sha256sum | cut -d' ' -f1)
+              psql "${{ $.Values.migration.databaseUrlKey }}" --set ON_ERROR_STOP=1 -c "INSERT INTO api_keys (name, key_hash) VALUES ('{{ .name }}', '$HASH') ON CONFLICT (key_hash) DO NOTHING;"
+              {{- end }}
           envFrom:
             - secretRef:
                 name: {{ include "togglemaster-base.secretName" . }}
