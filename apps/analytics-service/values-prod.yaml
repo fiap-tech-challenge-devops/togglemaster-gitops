@@ -15,7 +15,7 @@ service:
   targetPort: 8005
 
 autoscaling:
-  enabled: true
+  enabled: false
   minReplicas: 1
   maxReplicas: 5
   targetCPUUtilizationPercentage: 70
@@ -54,3 +54,10 @@ serviceAccount:
   name: analytics-service
   annotations:
     eks.amazonaws.com/role-arn: arn:aws:iam::762103020993:role/role-eks-togglemaster-apps
+
+keda:
+  enabled: true
+  queueURL: "https://sqs.us-east-1.amazonaws.com/762103020993/togglemaster-evaluation-events"
+  queueLength: "500"
+  minReplicaCount: 0
+  maxReplicaCount: 15

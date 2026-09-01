@@ -77,6 +77,17 @@ ingress:
   annotations: {}
   paths: []
 
+keda:
+  enabled: false
+  minReplicaCount: 0
+  maxReplicaCount: 15
+  pollingInterval: 20
+  cooldownPeriod: 60
+  queueURL: ""
+  queueLength: "500"
+  awsRegion: us-east-1
+  identityOwner: operator
+
 podAnnotations: {}
 nodeSelector: {}
 tolerations: []
