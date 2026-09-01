@@ -1,0 +1,35 @@
+{{- if .Values.keda.enabled }}
+apiVersion: keda.sh/v1alpha1
+kind: TriggerAuthentication
+metadata:
+  name: {{ .Release.Name }}-aws
+  namespace: {{ .Values.namespace | default "togglemaster" }}
+spec:
+  podIdentity:
+    provider: aws
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Values.namespace | default "togglemaster" }}
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+spec:
+  scaleTargetRef:
+    name: {{ .Release.Name }}
+  minReplicaCount: {{ .Values.keda.minReplicaCount }}
+  maxReplicaCount: {{ .Values.keda.maxReplicaCount }}
+  pollingInterval: {{ .Values.keda.pollingInterval }}
+  cooldownPeriod: {{ .Values.keda.cooldownPeriod }}
+  triggers:
+    - type: aws-sqs-queue
+      authenticationRef:
+        name: {{ .Release.Name }}-aws
+      metadata:
+        queueURL: {{ required "keda.queueURL e obrigatorio quando keda.enabled" .Values.keda.queueURL | quote }}
+        queueLength: {{ .Values.keda.queueLength | quote }}
+        awsRegion: {{ .Values.keda.awsRegion | quote }}
+        identityOwner: {{ .Values.keda.identityOwner }}
+{{- end }}

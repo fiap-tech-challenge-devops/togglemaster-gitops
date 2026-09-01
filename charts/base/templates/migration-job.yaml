@@ -1,0 +1,48 @@
+{{- if .Values.migration.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-migration
+  namespace: {{ .Values.namespace | default "togglemaster" }}
+  annotations:
+    argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+    argocd.argoproj.io/sync-wave: "1"
+data:
+  migration.sql: |
+{{ .Values.migration.sql | indent 4 }}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Release.Name }}-migration
+  namespace: {{ .Values.namespace | default "togglemaster" }}
+  annotations:
+    argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  backoffLimit: {{ .Values.migration.backoffLimit }}
+  template:
+    metadata:
+      name: {{ .Release.Name }}-migration
+    spec:
+      restartPolicy: Never
+      serviceAccountName: {{ include "togglemaster-base.serviceAccountName" . }}
+      containers:
+        - name: migration
+          image: {{ .Values.migration.image }}
+          command: ["sh", "-c"]
+          args:
+            - psql "${{ .Values.migration.databaseUrlKey }}" --set ON_ERROR_STOP=1 -f /sql/migration.sql
+          envFrom:
+            - secretRef:
+                name: {{ include "togglemaster-base.secretName" . }}
+          volumeMounts:
+            - name: sql
+              mountPath: /sql
+      volumes:
+        - name: sql
+          configMap:
+            name: {{ .Release.Name }}-migration
+{{- end }}

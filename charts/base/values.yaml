@@ -62,6 +62,38 @@ externalSecret:
 serviceAccount:
   create: true
   name: ""
+  annotations: {}
+
+ingress:
+  enabled: false
+  className: alb
+  groupName: togglemaster
+  groupOrder: ""
+  scheme: internet-facing
+  targetType: ip
+  listenPorts: '[{"HTTP":80}]'
+  healthcheckPath: ""
+  host: ""
+  annotations: {}
+  paths: []
+
+migration:
+  enabled: false
+  image: postgres:16-alpine
+  databaseUrlKey: DATABASE_URL
+  backoffLimit: 3
+  sql: ""
+
+keda:
+  enabled: false
+  minReplicaCount: 0
+  maxReplicaCount: 15
+  pollingInterval: 20
+  cooldownPeriod: 60
+  queueURL: ""
+  queueLength: "500"
+  awsRegion: us-east-1
+  identityOwner: operator
 
 podAnnotations: {}
 nodeSelector: {}
