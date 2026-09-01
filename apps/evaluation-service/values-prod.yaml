@@ -60,6 +60,8 @@ externalSecret:
 serviceAccount:
   create: true
   name: evaluation-service
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::762103020993:role/role-eks-togglemaster-apps
 
 ingress:
   enabled: true

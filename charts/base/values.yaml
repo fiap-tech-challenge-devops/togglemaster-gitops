@@ -62,6 +62,7 @@ externalSecret:
 serviceAccount:
   create: true
   name: ""
+  annotations: {}
 
 ingress:
   enabled: false

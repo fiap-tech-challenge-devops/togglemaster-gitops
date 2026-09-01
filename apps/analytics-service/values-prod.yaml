@@ -52,3 +52,5 @@ configMap:
 serviceAccount:
   create: true
   name: analytics-service
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::762103020993:role/role-eks-togglemaster-apps
