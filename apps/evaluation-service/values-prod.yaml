@@ -40,7 +40,7 @@ env:
 configMapData:
   AWS_REGION: "us-east-1"
   AWS_SQS_URL: "https://sqs.us-east-1.amazonaws.com/762103020993/togglemaster-evaluation-events"
-  REDIS_URL: "set-by-deploy-from-ssm"
+  REDIS_URL: "redis://redis-togglemaster.gysclb.ng.0001.use1.cache.amazonaws.com:6379/0"
   FLAG_SERVICE_URL: "http://flag-service:8002"
   TARGETING_SERVICE_URL: "http://targeting-service:8003"
 
