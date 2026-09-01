@@ -82,6 +82,7 @@ migration:
   image: postgres:16-alpine
   databaseUrlKey: DATABASE_URL
   backoffLimit: 3
+  seedApiKeys: []
   sql: ""
 
 keda:

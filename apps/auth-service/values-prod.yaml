@@ -51,6 +51,10 @@ externalSecret:
       remoteRef:
         key: togglemaster/app/auth
         property: MASTER_KEY
+    - secretKey: SERVICE_API_KEY
+      remoteRef:
+        key: togglemaster/app/evaluation
+        property: SERVICE_API_KEY
 
 serviceAccount:
   create: true
@@ -65,6 +69,9 @@ ingress:
 
 migration:
   enabled: true
+  seedApiKeys:
+    - name: evaluation-service
+      keyEnv: SERVICE_API_KEY
   sql: |
     CREATE TABLE IF NOT EXISTS api_keys (
         id SERIAL PRIMARY KEY,
