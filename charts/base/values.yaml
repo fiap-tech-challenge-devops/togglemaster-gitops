@@ -77,6 +77,13 @@ ingress:
   annotations: {}
   paths: []
 
+migration:
+  enabled: false
+  image: postgres:16-alpine
+  databaseUrlKey: DATABASE_URL
+  backoffLimit: 3
+  sql: ""
+
 keda:
   enabled: false
   minReplicaCount: 0
