@@ -44,7 +44,7 @@ spec:
             {{- end }}
             {{- if or .Values.secret.enabled .Values.externalSecret.enabled }}
             - secretRef:
-              name: {{ include "togglemaster-base.secretName" . }}
+                name: {{ include "togglemaster-base.secretName" . }}
             {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}

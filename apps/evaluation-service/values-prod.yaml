@@ -60,3 +60,9 @@ externalSecret:
 serviceAccount:
   create: true
   name: evaluation-service
+
+ingress:
+  enabled: true
+  groupOrder: "40"
+  paths:
+    - path: /evaluate

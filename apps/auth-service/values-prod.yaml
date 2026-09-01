@@ -55,3 +55,10 @@ externalSecret:
 serviceAccount:
   create: true
   name: auth-service
+
+ingress:
+  enabled: true
+  groupOrder: "10"
+  paths:
+    - path: /validate
+    - path: /admin

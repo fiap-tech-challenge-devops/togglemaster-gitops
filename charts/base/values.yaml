@@ -63,6 +63,19 @@ serviceAccount:
   create: true
   name: ""
 
+ingress:
+  enabled: false
+  className: alb
+  groupName: togglemaster
+  groupOrder: ""
+  scheme: internet-facing
+  targetType: ip
+  listenPorts: '[{"HTTP":80}]'
+  healthcheckPath: ""
+  host: ""
+  annotations: {}
+  paths: []
+
 podAnnotations: {}
 nodeSelector: {}
 tolerations: []
