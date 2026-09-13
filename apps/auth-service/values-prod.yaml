@@ -3,7 +3,7 @@ replicaCount: 2
 
 image:
   repository: 762103020993.dkr.ecr.us-east-1.amazonaws.com/togglemaster/auth-service
-  tag: 25fefec41b7899ca37efedcdba058ddb4bc916fe
+  tag: e19897379f7625de88495a57ffa26ae23c38a1f9
   pullPolicy: IfNotPresent
 
 imagePullSecrets:
