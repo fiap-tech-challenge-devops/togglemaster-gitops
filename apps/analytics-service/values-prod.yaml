@@ -40,6 +40,18 @@ env:
   - name: PORT
     value: "8005"
 
+# Ligado antes da instrumentacao: imagem sem SDK ignora estas variaveis, e a
+# primeira imagem instrumentada ja nasce apontando para o Collector.
+otel:
+  enabled: true
+  extraEnv:
+    - name: OTEL_LOGS_EXPORTER
+      value: otlp
+    - name: OTEL_PYTHON_LOG_CORRELATION
+      value: "true"
+    - name: OTEL_PYTHON_FLASK_EXCLUDED_URLS
+      value: health
+
 configMapData:
   AWS_REGION: "us-east-1"
   AWS_SQS_URL: "https://sqs.us-east-1.amazonaws.com/762103020993/togglemaster-evaluation-events"

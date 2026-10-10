@@ -37,6 +37,12 @@ env:
   - name: PORT
     value: "8004"
 
+# Ligado antes da instrumentacao: imagem sem SDK ignora estas variaveis, e a
+# primeira imagem instrumentada ja nasce apontando para o Collector.
+# Em Go nao ha variaveis extras — o filtro do /health e o formato do log sao codigo.
+otel:
+  enabled: true
+
 configMapData:
   AWS_REGION: "us-east-1"
   AWS_SQS_URL: "https://sqs.us-east-1.amazonaws.com/762103020993/togglemaster-evaluation-events"
