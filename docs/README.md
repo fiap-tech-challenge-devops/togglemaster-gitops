@@ -4,6 +4,14 @@ Registro dos desafios técnicos e correções aplicadas durante o desenvolviment
 
 Cada documento descreve: o problema, a causa, o erro observado, como foi descoberto, a correção e como validar.
 
+## Guias
+
+Diferente dos desafios, que são registro histórico, os guias explicam **como está e como continuar**.
+
+| Guia | Para quem |
+|---|---|
+| [Observabilidade](guia-observabilidade.md) | Quem vai dar sequência à Fase 4: mapa, convenções, próximos passos e armadilhas conhecidas |
+
 ## Desafios
 
 | # | Documento | Escopo |
