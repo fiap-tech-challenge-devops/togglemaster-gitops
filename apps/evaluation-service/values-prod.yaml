@@ -3,7 +3,7 @@ replicaCount: 2
 
 image:
   repository: 762103020993.dkr.ecr.us-east-1.amazonaws.com/togglemaster/evaluation-service
-  tag: d9ffa73135e30fda2ff97856ccbf4b7c1ddbb64c
+  tag: c9858feeefa638f9e5451aa777a1d4537fbe9fea
   pullPolicy: IfNotPresent
 
 imagePullSecrets:
