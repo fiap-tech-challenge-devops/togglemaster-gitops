@@ -3,7 +3,7 @@ replicaCount: 2
 
 image:
   repository: 762103020993.dkr.ecr.us-east-1.amazonaws.com/togglemaster/flag-service
-  tag: c1446d1725e5ee5ec57081ced83f14194fe4cd63
+  tag: 42a8e4ef3f4a5ed77c39de9f3ffb9beaa6482757
   pullPolicy: IfNotPresent
 
 imagePullSecrets:
