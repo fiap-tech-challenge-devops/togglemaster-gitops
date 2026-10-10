@@ -37,6 +37,18 @@ env:
   - name: PORT
     value: "8003"
 
+otel:
+  enabled: true
+  # Especificas do Python: log por OTLP, correlacao no stdout e o /health fora
+  # do trace, que o probe bate a cada 20s.
+  extraEnv:
+    - name: OTEL_LOGS_EXPORTER
+      value: otlp
+    - name: OTEL_PYTHON_LOG_CORRELATION
+      value: "true"
+    - name: OTEL_PYTHON_FLASK_EXCLUDED_URLS
+      value: health
+
 configMapData:
   AUTH_SERVICE_URL: "http://auth-service:8001"
 
