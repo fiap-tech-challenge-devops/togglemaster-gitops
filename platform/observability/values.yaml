@@ -1,0 +1,63 @@
+# Valores do subchart opentelemetry-collector.
+opentelemetry-collector:
+  # Nome previsivel para o Service: otel-collector.observability.svc.cluster.local
+  fullnameOverride: otel-collector
+
+  mode: deployment
+  replicaCount: 1
+
+  # O distro k8s padrao do chart nao traz o exporter nem o connector do Datadog.
+  image:
+    repository: otel/opentelemetry-collector-contrib
+
+  # Cria ServiceAccount, ClusterRole e binding exigidos pelo k8sattributes.
+  presets:
+    kubernetesAttributes:
+      enabled: true
+
+  # O no tem ~380m de CPU livres; acima disso o Karpenter sobe outro.
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      memory: 512Mi
+
+  config:
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:4317
+          http:
+            endpoint: 0.0.0.0:4318
+      # Desligados: o chart habilita por padrao e nada os consome ainda.
+      jaeger: null
+      zipkin: null
+      prometheus: null
+
+    processors:
+      batch: {}
+      memory_limiter:
+        check_interval: 5s
+        limit_percentage: 80
+        spike_limit_percentage: 25
+
+    exporters:
+      debug:
+        verbosity: detailed
+
+    service:
+      pipelines:
+        traces:
+          receivers: [otlp]
+          processors: [memory_limiter, k8sattributes, batch]
+          exporters: [debug]
+        metrics:
+          receivers: [otlp]
+          processors: [memory_limiter, k8sattributes, batch]
+          exporters: [debug]
+        logs:
+          receivers: [otlp]
+          processors: [memory_limiter, k8sattributes, batch]
+          exporters: [debug]

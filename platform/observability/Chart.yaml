@@ -1,0 +1,13 @@
+apiVersion: v2
+name: observability
+description: Stack de observabilidade do ToggleMaster
+type: application
+version: 0.1.0
+
+# Charts de terceiros entram como dependencia, nao como Application apontando
+# direto para o repositorio Helm. Assim o values fica em arquivo versionado e
+# manifestos proprios podem conviver em templates/.
+dependencies:
+  - name: opentelemetry-collector
+    version: 0.175.1
+    repository: https://open-telemetry.github.io/opentelemetry-helm-charts
