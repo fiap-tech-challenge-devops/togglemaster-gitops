@@ -13,3 +13,4 @@ Cada documento descreve: o problema, a causa, o erro observado, como foi descobe
 | 05 | [IRSA, migrations e KEDA](desafios/05-irsa-migrations-e-keda.md) | Anotação de role no ServiceAccount, Job de migration por sync-wave e escala por fila |
 | 06 | [O primeiro sync real](desafios/06-primeiro-sync-real.md) | Impasse de `sync-wave` no KEDA e o `REDIS_URL` que nunca foi substituído |
 | 07 | [Bootstrap da chave de serviço](desafios/07-bootstrap-da-chave-de-servico.md) | `SERVICE_API_KEY` semeada na migration, `checksum/config` e `replicas` sob autoscaler |
+| 08 | [Collector e charts de terceiros](desafios/08-otel-collector-e-charts-de-terceiros.md) | Chart wrapper, um componente por Application e o bloco `otel` no chart base |
