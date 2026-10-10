@@ -1,0 +1,4 @@
+# Subcharts baixados pela resolucao de dependencia. O Chart.lock e versionado;
+# os .tgz o Argo CD baixa sozinho no repo-server.
+charts/*.tgz
+**/charts/*.tgz

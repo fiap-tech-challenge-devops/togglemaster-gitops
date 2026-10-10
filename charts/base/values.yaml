@@ -96,7 +96,18 @@ keda:
   awsRegion: us-east-1
   identityOwner: operator
 
+# Telemetria. Desligado por padrao: so os servicos ja instrumentados ligam.
+# O service.name sai do nome do release e o service.version da tag da imagem.
+otel:
+  enabled: false
+  namespace: togglemaster
+  environment: prod
+  endpoint: http://otel-collector.observability.svc.cluster.local:4317
+  protocol: grpc
+  extraEnv: []
+
 podAnnotations: {}
+podLabels: {}
 nodeSelector: {}
 tolerations: []
 affinity: {}

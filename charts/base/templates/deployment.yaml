@@ -20,6 +20,13 @@ spec:
     metadata:
       labels:
         app: {{ .Release.Name }}
+        app.kubernetes.io/name: {{ .Release.Name }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/version: {{ .Values.image.tag | quote }}
+        app.kubernetes.io/part-of: togglemaster
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
       annotations:
         checksum/config: {{ toYaml .Values.configMapData | sha256sum }}
         {{- with .Values.podAnnotations }}
@@ -41,6 +48,25 @@ spec:
           env:
             {{- with .Values.env }}
             {{- toYaml . | nindent 12 }}
+            {{- end }}
+            {{- if .Values.otel.enabled }}
+            # POD_NAME vem antes: o $(POD_NAME) abaixo e interpolado pelo
+            # Kubernetes na ordem da lista.
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: OTEL_SERVICE_NAME
+              value: {{ .Release.Name }}
+            - name: OTEL_RESOURCE_ATTRIBUTES
+              value: "service.namespace={{ .Values.otel.namespace }},service.version={{ .Values.image.tag }},deployment.environment.name={{ .Values.otel.environment }},service.instance.id=$(POD_NAME)"
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: {{ .Values.otel.endpoint | quote }}
+            - name: OTEL_EXPORTER_OTLP_PROTOCOL
+              value: {{ .Values.otel.protocol | quote }}
+            {{- with .Values.otel.extraEnv }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
             {{- end }}
           envFrom:
             {{- if .Values.configMap.enabled }}
