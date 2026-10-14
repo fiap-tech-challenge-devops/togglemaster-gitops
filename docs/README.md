@@ -4,13 +4,19 @@ Registro dos desafios técnicos e correções aplicadas durante o desenvolviment
 
 Cada documento descreve: o problema, a causa, o erro observado, como foi descoberto, a correção e como validar.
 
-## Guias
+## Guias e decisões: no repositório `.github`
 
-Diferente dos desafios, que são registro histórico, os guias explicam **como está e como continuar**.
+Os desafios abaixo são registro histórico deste repositório e continuam aqui. O que **atravessa repositórios** foi centralizado em [`fiap-tech-challenge-devops/.github`](https://github.com/fiap-tech-challenge-devops/.github/tree/main/docs):
 
-| Guia | Para quem |
+| Lá | O quê |
 |---|---|
-| [Observabilidade](guia-observabilidade.md) | Quem vai dar sequência à Fase 4: mapa, convenções, próximos passos e armadilhas conhecidas |
+| [Kubernetes e GitOps](https://github.com/fiap-tech-challenge-devops/.github/blob/main/docs/kubernetes/README.md) | O que este repositório cobre, e para onde olhar |
+| [Guia de observabilidade](https://github.com/fiap-tech-challenge-devops/.github/blob/main/docs/observabilidade/guia.md) | Como o dado flui e como ligar cada backend — **estava neste repositório, em `guia-observabilidade.md`** |
+| [Registro de decisões](https://github.com/fiap-tech-challenge-devops/.github/tree/main/docs/decisoes) | Por que o chart de terceiros entra como wrapper, por que uma Application por componente, e as demais |
+
+O guia descreve cinco repositórios de serviço mais este e o Collector. Não havia repositório onde ele ficasse ao lado de tudo que descreve — por isso saiu daqui.
+
+**A regra:** documento sobre algo que vive só neste repositório fica em `desafios/`, atualizado no mesmo PR que muda o código. Se vincula vários, vai para o `.github`.
 
 ## Desafios
 
