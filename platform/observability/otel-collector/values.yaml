@@ -18,10 +18,17 @@ opentelemetry-collector:
   # O no tem ~380m de CPU livres; acima disso o Karpenter sobe outro.
   resources:
     requests:
-      cpu: 100m
-      memory: 256Mi
+      cpu: 150m
+      memory: 384Mi
     limits:
-      memory: 512Mi
+      memory: 768Mi
+
+  extraEnvs:
+    - name: DD_API_KEY
+      valueFrom:
+        secretKeyRef:
+          name: datadog-api-key
+          key: DD_API_KEY
 
   config:
     receivers:
@@ -43,21 +50,34 @@ opentelemetry-collector:
         limit_percentage: 80
         spike_limit_percentage: 25
 
+    # Deriva as metricas de APM por servico a partir dos traces.
+    connectors:
+      datadog/connector: {}
+
     exporters:
       debug:
-        verbosity: detailed
+        verbosity: basic
+
+      datadog:
+        api:
+          site: datadoghq.com
+          key: ${env:DD_API_KEY}
+        sending_queue:
+          enabled: true
+        retry_on_failure:
+          enabled: true
 
     service:
       pipelines:
         traces:
           receivers: [otlp]
           processors: [memory_limiter, k8sattributes, batch]
-          exporters: [debug]
+          exporters: [debug, datadog/connector, datadog]
         metrics:
-          receivers: [otlp]
+          receivers: [otlp, datadog/connector]
           processors: [memory_limiter, k8sattributes, batch]
-          exporters: [debug]
+          exporters: [debug, datadog]
         logs:
           receivers: [otlp]
           processors: [memory_limiter, k8sattributes, batch]
-          exporters: [debug]
+          exporters: [debug, datadog]
