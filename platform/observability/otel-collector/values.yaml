@@ -27,8 +27,13 @@ opentelemetry-collector:
     - name: DD_API_KEY
       valueFrom:
         secretKeyRef:
-          name: datadog-api-key
+          name: datadog-account
           key: DD_API_KEY
+    - name: DD_SITE
+      valueFrom:
+        secretKeyRef:
+          name: datadog-account
+          key: DD_SITE
 
   config:
     receivers:
@@ -60,7 +65,7 @@ opentelemetry-collector:
 
       datadog:
         api:
-          site: datadoghq.com
+          site: ${env:DD_SITE}
           key: ${env:DD_API_KEY}
         sending_queue:
           enabled: true
