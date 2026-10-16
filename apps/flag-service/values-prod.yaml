@@ -17,28 +17,6 @@ service:
 autoscaling:
   enabled: false
 
-# ┌─ FALHA PROPOSITAL — DEMONSTRAÇÃO DA FASE 4 ─────────────────────────────┐
-# │ Isto NÃO é configuração de verdade. Estrangula o flag-service para      │
-# │ demonstrar falha em cascata: ele fica lento, o evaluation estoura o     │
-# │ timeout de 5s e devolve 502.                                            │
-# │                                                                         │
-# │ 25m é 2,5% de um núcleo. O /health continua respondendo dentro do 1s    │
-# │ da sonda — ele devolve JSON fixo —, enquanto /flags arrasta, porque     │
-# │ passa pelo require_auth e pela query no Postgres.                       │
-# │                                                                         │
-# │ requests = limits de propósito: requests maior que limits faz o         │
-# │ Kubernetes recusar o pod, e sem pod não há span nem demonstração.       │
-# │                                                                         │
-# │ O padrão do chart base é 500m. REVERTER ESTE COMMIT restaura.           │
-# └─────────────────────────────────────────────────────────────────────────┘
-resources:
-  requests:
-    cpu: 25m
-    memory: 128Mi
-  limits:
-    cpu: 25m
-    memory: 512Mi
-
 readinessProbe:
   enabled: true
   path: /health
