@@ -1,0 +1,98 @@
+# Valores do subchart kube-prometheus-stack.
+#
+# Escopo desta entrega: Prometheus com as metricas de infraestrutura do
+# cluster - no (node-exporter), container (cAdvisor do kubelet) e objetos do
+# Kubernetes (kube-state-metrics).
+kube-prometheus-stack:
+  # Nome previsivel para o Service: kube-prometheus-stack-prometheus.observability.svc.cluster.local
+  fullnameOverride: kube-prometheus-stack
+
+  # Vem no mesmo chart, mas cada um tem card proprio. Desligados nao pedem CPU,
+  # o recurso mais escasso do no.
+  grafana:
+    enabled: false
+  alertmanager:
+    enabled: false
+
+  # O control plane do EKS e gerenciado pela AWS: scheduler, controller-manager
+  # e etcd nao sao alcancaveis de dentro do cluster. Ligados, viram alvos DOWN.
+  # O kube-proxy so expoe metricas em 127.0.0.1 do proprio no.
+  kubeControllerManager:
+    enabled: false
+  kubeScheduler:
+    enabled: false
+  kubeEtcd:
+    enabled: false
+  kubeProxy:
+    enabled: false
+
+  # As regras de gravacao ficam: os dashboards de Kubernetes do Grafana
+  # consultam as series que elas pre-calculam. As dos componentes desligados
+  # acima ja somem junto; as do Alertmanager nao, e precisam do toggle.
+  defaultRules:
+    rules:
+      alertmanager: false
+
+  prometheusOperator:
+    # Os webhooks validam PrometheusRule antes de aplicar. O certificado deles
+    # nasce num Job de hook do Helm, que depois corrige o caBundle no cluster:
+    # o Argo CD enxerga essa correcao como drift e o app fica OutOfSync. O TLS
+    # do operator existe para servir esses webhooks, entao sai junto.
+    admissionWebhooks:
+      enabled: false
+    tls:
+      enabled: false
+    resources:
+      requests:
+        cpu: 20m
+        memory: 64Mi
+      limits:
+        memory: 256Mi
+
+  prometheus:
+    prometheusSpec:
+      # Sem o EBS CSI driver (enable_ebs_csi_driver = false no togglemaster-iac),
+      # um PVC nunca sai de Pending. emptyDir basta: o ambiente e destruido toda
+      # noite, e o dado nao precisa sobreviver a isso.
+      storageSpec:
+        emptyDir:
+          sizeLimit: 4Gi
+      retention: 24h
+      # Abaixo do sizeLimit: o Prometheus descarta bloco antigo antes de o
+      # kubelet despejar o pod por excesso de disco.
+      retentionSize: 3GB
+
+      # Le ServiceMonitor, PodMonitor e PrometheusRule de qualquer release, e nao
+      # so dos que carregam o label release=kube-prometheus-stack. E por onde as
+      # metricas das aplicacoes vao entrar: um ServiceMonitor no Collector,
+      # porta 8889 (guia de observabilidade, Parte 2).
+      serviceMonitorSelectorNilUsesHelmValues: false
+      podMonitorSelectorNilUsesHelmValues: false
+      ruleSelectorNilUsesHelmValues: false
+      probeSelectorNilUsesHelmValues: false
+      scrapeConfigSelectorNilUsesHelmValues: false
+
+      # Sem limite de CPU de proposito: a compactacao do TSDB e em rajada.
+      resources:
+        requests:
+          cpu: 100m
+          memory: 1Gi
+        limits:
+          memory: 2Gi
+
+  kube-state-metrics:
+    resources:
+      requests:
+        cpu: 10m
+        memory: 64Mi
+      limits:
+        memory: 128Mi
+
+  # DaemonSet: um pod em cada no, inclusive nos que o Karpenter sobe.
+  prometheus-node-exporter:
+    resources:
+      requests:
+        cpu: 10m
+        memory: 32Mi
+      limits:
+        memory: 64Mi
