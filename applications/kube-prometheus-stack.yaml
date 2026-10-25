@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kube-prometheus-stack
+  namespace: argocd
+  annotations:
+    # Antes do Collector: as CRDs do Prometheus Operator (ServiceMonitor,
+    # PrometheusRule) nascem aqui, e outros componentes trazem os seus.
+    argocd.argoproj.io/sync-wave: "-3"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/fiap-tech-challenge-devops/togglemaster-gitops.git
+    targetRevision: main
+    path: platform/observability/kube-prometheus-stack
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: observability
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      # As CRDs do Prometheus Operator passam de 256 KiB. O apply padrao grava o
+      # manifesto inteiro na annotation last-applied-configuration e estoura o
+      # limite; o server-side apply nao usa essa annotation.
+      - ServerSideApply=true

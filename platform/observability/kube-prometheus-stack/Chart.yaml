@@ -1,0 +1,12 @@
+apiVersion: v2
+name: kube-prometheus-stack
+description: Prometheus do ToggleMaster - metricas de infraestrutura do cluster
+type: application
+version: 0.1.0
+
+# Mesmo padrao do otel-collector: o chart de terceiros entra como dependencia
+# de um chart nosso. Ver platform/README.md.
+dependencies:
+  - name: kube-prometheus-stack
+    version: 92.10.1
+    repository: https://prometheus-community.github.io/helm-charts

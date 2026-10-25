@@ -6,7 +6,7 @@ Componentes de plataforma — o que sustenta os microsserviços, e não os micro
 platform/
 └── observability/
     ├── otel-collector/     recebe e roteia a telemetria
-    ├── kube-prometheus-stack/   (previsto) Prometheus, Alertmanager e Grafana
+    ├── kube-prometheus-stack/   Prometheus (Alertmanager e Grafana no mesmo chart, ainda desligados)
     └── loki/               (previsto) logs
 ```
 
