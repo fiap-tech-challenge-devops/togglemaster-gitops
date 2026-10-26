@@ -1,0 +1,31 @@
+{
+  "id": null,
+  "uid": "togglemaster-overview",
+  "title": "ToggleMaster - Visão geral",
+  "tags": ["togglemaster", "fase4"],
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "30s",
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "panels": [
+    {
+      "id": 1,
+      "type": "text",
+      "title": "Observabilidade do ToggleMaster",
+      "gridPos": {
+        "h": 4,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "options": {
+        "mode": "markdown",
+        "content": "Dashboard provisionado como código pelo GitOps.\n\nOs painéis de recursos do cluster, requisições e logs serão adicionados nas próximas etapas."
+      }
+    }
+  ]
+}
