@@ -28,3 +28,4 @@ O guia descreve cinco repositórios de serviço mais este e o Collector. Não ha
 | 06 | [O primeiro sync real](desafios/06-primeiro-sync-real.md) | Impasse de `sync-wave` no KEDA e o `REDIS_URL` que nunca foi substituído |
 | 07 | [Bootstrap da chave de serviço](desafios/07-bootstrap-da-chave-de-servico.md) | `SERVICE_API_KEY` semeada na migration, `checksum/config` e `replicas` sob autoscaler |
 | 08 | [Collector e charts de terceiros](desafios/08-otel-collector-e-charts-de-terceiros.md) | Chart wrapper, um componente por Application e o bloco `otel` no chart base |
+| 09 | [Prometheus efêmero no EKS](desafios/09-prometheus-efemero-no-eks.md) | `emptyDir` sem EBS CSI, CRDs acima de 256 KiB e o que o chart liga e o EKS não tem |
