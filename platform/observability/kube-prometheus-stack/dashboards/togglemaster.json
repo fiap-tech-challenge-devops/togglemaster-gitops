@@ -26,6 +26,50 @@
         "mode": "markdown",
         "content": "Dashboard provisionado como código pelo GitOps.\n\nOs painéis de recursos do cluster, requisições e logs serão adicionados nas próximas etapas."
       }
+    },
+
+    {
+      "id": 2,
+      "type": "timeseries",
+      "title": "CPU dos nós — uso não ocioso (%)",
+      "description": "Percentual de tempo não ocioso da CPU, por instância do node-exporter.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 4
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "min": 0,
+          "max": 100
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "100 * (1 - avg by (instance) (rate(node_cpu_seconds_total{mode=\"idle\"}[5m])))",
+          "legendFormat": "{{instance}}",
+          "range": true
+        }
+      ]
     }
+
   ]
 }
