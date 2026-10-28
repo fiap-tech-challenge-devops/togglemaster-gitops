@@ -6,6 +6,22 @@ opentelemetry-collector:
   mode: deployment
   replicaCount: 1
 
+    # Endpoint de metricas das aplicacoes para coleta pelo Prometheus.
+  ports:
+    prometheus:
+      enabled: true
+      containerPort: 8889
+      servicePort: 8889
+      protocol: TCP
+
+    # Configura a coleta das metricas das aplicacoes pelo Prometheus.
+  serviceMonitor:
+    enabled: true
+    metricsEndpoints:
+      - port: prometheus
+        path: /metrics
+        interval: 30s
+
   # O distro k8s padrao do chart nao traz o exporter nem o connector do Datadog.
   image:
     repository: otel/opentelemetry-collector-contrib
@@ -63,6 +79,9 @@ opentelemetry-collector:
       debug:
         verbosity: basic
 
+      prometheus:
+        endpoint: 0.0.0.0:8889
+
       datadog:
         api:
           site: ${env:DD_SITE}
@@ -81,7 +100,7 @@ opentelemetry-collector:
         metrics:
           receivers: [otlp, datadog/connector]
           processors: [memory_limiter, k8sattributes, batch]
-          exporters: [debug, datadog]
+          exporters: [debug, datadog, prometheus]
         logs:
           receivers: [otlp]
           processors: [memory_limiter, k8sattributes, batch]
