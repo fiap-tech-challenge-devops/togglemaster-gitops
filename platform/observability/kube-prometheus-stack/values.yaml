@@ -10,7 +10,20 @@ kube-prometheus-stack:
   # Vem no mesmo chart, mas cada um tem card proprio. Desligados nao pedem CPU,
   # o recurso mais escasso do no.
   grafana:
-    enabled: false
+    enabled: true
+
+    service:
+      type: ClusterIP
+
+    ingress:
+      enabled: false
+
+    sidecar:
+      dashboards:
+        enabled: true
+        label: grafana_dashboard
+        labelValue: "1"
+
   alertmanager:
     enabled: false
 
