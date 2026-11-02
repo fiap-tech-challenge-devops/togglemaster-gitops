@@ -1,0 +1,12 @@
+{{- if (index .Values "kube-prometheus-stack").grafana.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-dashboard-togglemaster
+  namespace: {{ .Release.Namespace }}
+  labels:
+    grafana_dashboard: "1"
+data:
+  togglemaster.json: |-
+{{ .Files.Get "dashboards/togglemaster.json" | nindent 4 }}
+{{- end }}
