@@ -24,7 +24,7 @@
       },
       "options": {
         "mode": "markdown",
-        "content": "Dashboard provisionado como código pelo GitOps.\n\nOs painéis de recursos do cluster, requisições e logs serão adicionados nas próximas etapas."
+        "content": "Dashboard provisionado como código pelo GitOps.\n\nCentraliza o uso de recursos do cluster (Prometheus), a taxa de requisições HTTP dos microsserviços (OTel Collector → Prometheus) e os logs em tempo real (OTel Collector → Loki)."
       }
     },
 
@@ -154,6 +154,39 @@
           "expr": "100 * (1 - node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)",
           "legendFormat": "{{instance}}",
           "range": true
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "logs",
+      "title": "Logs em tempo real — Microsserviços",
+      "description": "Logs centralizados dos microsserviços no namespace togglemaster, recebidos pelo OTel Collector e enviados ao Loki via OTLP.",
+      "datasource": {
+        "type": "loki",
+        "uid": "loki"
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 20
+      },
+      "options": {
+        "dedupStrategy": "none",
+        "enableLogDetails": true,
+        "prettifyLogMessage": false,
+        "showCommonLabels": false,
+        "showLabels": true,
+        "showTime": true,
+        "sortOrder": "Descending",
+        "wrapLogMessage": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "{service_namespace=\"togglemaster\"}",
+          "queryType": "range"
         }
       ]
     }

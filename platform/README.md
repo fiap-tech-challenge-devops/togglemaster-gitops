@@ -6,8 +6,8 @@ Componentes de plataforma — o que sustenta os microsserviços, e não os micro
 platform/
 └── observability/
     ├── otel-collector/     recebe e roteia a telemetria
-    ├── kube-prometheus-stack/   Prometheus (Alertmanager e Grafana no mesmo chart, ainda desligados)
-    └── loki/               (previsto) logs
+    ├── kube-prometheus-stack/   Prometheus e Grafana
+    └── loki/               logs
 ```
 
 A pasta de domínio (`observability/`) é navegação humana — o Argo CD lê caminho explícito. Ela existe para que outros domínios caibam depois, como `controllers/`, caso External Secrets e KEDA saiam do Terraform.

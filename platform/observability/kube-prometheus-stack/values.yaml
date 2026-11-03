@@ -24,6 +24,14 @@ kube-prometheus-stack:
         label: grafana_dashboard
         labelValue: "1"
 
+    additionalDataSources:
+      - name: Loki
+        uid: loki
+        type: loki
+        access: proxy
+        url: http://loki.observability.svc.cluster.local:3100
+        isDefault: false
+
   alertmanager:
     enabled: false
 

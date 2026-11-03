@@ -1,0 +1,12 @@
+apiVersion: v2
+name: loki
+description: Loki do ToggleMaster - centralizacao e indexacao de logs
+type: application
+version: 0.1.0
+
+# Mesmo padrao do otel-collector e do kube-prometheus-stack: o chart de
+# terceiros entra como dependencia de um chart nosso. Ver platform/README.md.
+dependencies:
+  - name: loki
+    version: 7.5.0
+    repository: https://grafana.github.io/helm-charts
