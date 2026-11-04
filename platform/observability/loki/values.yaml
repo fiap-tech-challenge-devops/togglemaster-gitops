@@ -1,0 +1,110 @@
+# Valores do subchart loki.
+#
+# Escopo desta entrega: Loki em modo monolitico (SingleBinary) efemero para
+# centralizacao e indexacao dos logs enviados pelo OTel Collector via OTLP.
+loki:
+  # Nome previsivel para o Service: loki.observability.svc.cluster.local
+  fullnameOverride: loki
+
+  deploymentMode: SingleBinary
+
+  loki:
+    auth_enabled: false
+
+    commonConfig:
+      replication_factor: 1
+
+    storage:
+      type: filesystem
+
+    schemaConfig:
+      configs:
+        - from: "2024-04-01"
+          store: tsdb
+          object_store: filesystem
+          schema: v13
+          index:
+            prefix: loki_index_
+            period: 24h
+
+    limits_config:
+      # Exigido para ingestao nativa por OTLP (/otlp).
+      allow_structured_metadata: true
+      volume_enabled: true
+      retention_period: 24h
+
+    compactor:
+      retention_enabled: true
+      delete_request_store: filesystem
+
+  singleBinary:
+    replicas: 1
+    # Sem o EBS CSI driver (enable_ebs_csi_driver = false no togglemaster-iac),
+    # um PVC nunca sai de Pending. Com persistence.enabled = false e
+    # readOnlyRootFilesystem = true no container, o volume /var/loki precisa
+    # entrar como emptyDir explicito.
+    persistence:
+      enabled: false
+    extraVolumes:
+      - name: storage
+        emptyDir:
+          sizeLimit: 2Gi
+    extraVolumeMounts:
+      - name: storage
+        mountPath: /var/loki
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        memory: 512Mi
+
+  # Modo SimpleScalable vem ligado por padrao no chart; em SingleBinary as
+  # replicas precisam ser zeradas para passar na validacao do template.
+  write:
+    replicas: 0
+  read:
+    replicas: 0
+  backend:
+    replicas: 0
+  ingester:
+    replicas: 0
+  querier:
+    replicas: 0
+  queryFrontend:
+    replicas: 0
+  queryScheduler:
+    replicas: 0
+  distributor:
+    replicas: 0
+  compactor:
+    replicas: 0
+  indexGateway:
+    replicas: 0
+  bloomCompactor:
+    replicas: 0
+  bloomGateway:
+    replicas: 0
+
+  # Desnecessarios para instalacao monolitica efemera: Collector e Grafana
+  # falam direto com o Service do Loki na porta 3100, e o cache em Memcached
+  # reservaria 9 GB de RAM nos nos spot.
+  gateway:
+    enabled: false
+  chunksCache:
+    enabled: false
+  resultsCache:
+    enabled: false
+  sidecar:
+    rules:
+      enabled: false
+  lokiCanary:
+    enabled: false
+  test:
+    enabled: false
+
+  monitoring:
+    serviceMonitor:
+      enabled: true
+      metricsInstance:
+        enabled: false

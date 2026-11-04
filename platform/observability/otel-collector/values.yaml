@@ -82,6 +82,9 @@ opentelemetry-collector:
       prometheus:
         endpoint: 0.0.0.0:8889
 
+      otlphttp/loki:
+        endpoint: http://loki.observability.svc.cluster.local:3100/otlp
+
       datadog:
         api:
           site: ${env:DD_SITE}
@@ -104,4 +107,4 @@ opentelemetry-collector:
         logs:
           receivers: [otlp]
           processors: [memory_limiter, k8sattributes, batch]
-          exporters: [debug, datadog]
+          exporters: [debug, datadog, otlphttp/loki]
