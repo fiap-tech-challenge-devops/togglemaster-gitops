@@ -12,6 +12,20 @@ kube-prometheus-stack:
   grafana:
     enabled: true
 
+    # Sem isto o chart cria Secret proprio com randAlphaNum 40. O Argo renderiza
+    # com `helm template`, onde o lookup do Secret existente volta vazio, entao
+    # a senha nasce nova a cada sincronizacao: o Secret muda, a annotation
+    # checksum/secret muda junto e o Deployment faz rollout perpetuo. Medido em
+    # 13/11: tres ReplicaSets e a senha trocando em 25 minutos. Ver ADR 0036.
+    #
+    # O Grafana so aplica esta senha ao INICIALIZAR o banco dele. Hoje o storage
+    # e efemero, entao todo pod novo a aplica. Se alguem ligar persistencia,
+    # trocar o valor no Secrets Manager deixa de ter efeito.
+    admin:
+      existingSecret: grafana-admin
+      userKey: admin-user
+      passwordKey: admin-password
+
     service:
       type: ClusterIP
 
